@@ -1,0 +1,16 @@
+<!--
+  Generic embed snippet for the academy-tech.ir account-profile page.
+  Copy this into the profile page template of whatever your site is
+  built with. The only thing your backend must do is render a
+  short-lived JWT for the logged-in user into data-token — see
+  wordpress-shortcode.php for a concrete example of issuing that token.
+-->
+<div
+  id="academy-tech-compiler"
+  data-api-url="https://compiler-api.academy-tech.ir"
+  data-token="{{ SERVER_RENDERED_JWT_FOR_THIS_USER }}"
+  data-default-language="python"
+></div>
+
+<link rel="stylesheet" href="/compiler/widget.css">
+<script src="/compiler/widget.js" defer></script>
