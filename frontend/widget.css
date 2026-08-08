@@ -1,0 +1,175 @@
+/*
+ * Academy-Tech Compiler widget — self-contained styling.
+ * No external fonts, no CDN imports: nothing for a third party to see
+ * or tamper with when this loads on academy-tech.ir.
+ * Respects the visitor's light/dark preference automatically.
+ */
+:root {
+  --atc-bg: #ffffff;
+  --atc-surface: #f6f8fa;
+  --atc-border: #d9dee3;
+  --atc-text: #1b1f24;
+  --atc-muted: #62707d;
+  --atc-primary: #2f6feb;
+  --atc-primary-hover: #2456bf;
+  --atc-danger: #cf222e;
+  --atc-danger-bg: #fff1f0;
+  --atc-success: #1a7f37;
+  --atc-radius: 10px;
+  --atc-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Vazirmatn, Tahoma, Arial, sans-serif;
+  --atc-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --atc-bg: #0d1117;
+    --atc-surface: #161b22;
+    --atc-border: #30363d;
+    --atc-text: #e6edf3;
+    --atc-muted: #8b949e;
+    --atc-primary: #4c8dff;
+    --atc-primary-hover: #79aaff;
+    --atc-danger: #ff7b72;
+    --atc-danger-bg: #2a1315;
+    --atc-success: #3fb950;
+  }
+}
+
+.atc-widget {
+  font-family: var(--atc-font);
+  color: var(--atc-text);
+  background: var(--atc-bg);
+  border: 1px solid var(--atc-border);
+  border-radius: var(--atc-radius);
+  max-width: 900px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+.atc-widget * { box-sizing: border-box; }
+
+.atc-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 8px 8px 0;
+  background: var(--atc-surface);
+  border-bottom: 1px solid var(--atc-border);
+}
+.atc-tab {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--atc-muted);
+  font: inherit;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 8px 14px;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+}
+.atc-tab:hover { color: var(--atc-text); }
+.atc-tab[aria-selected="true"] {
+  color: var(--atc-primary);
+  background: var(--atc-bg);
+  border: 1px solid var(--atc-border);
+  border-bottom-color: var(--atc-bg);
+  margin-bottom: -1px;
+}
+
+.atc-editor-wrap {
+  display: flex;
+  font-family: var(--atc-mono);
+  font-size: 13px;
+  line-height: 1.55;
+  background: var(--atc-bg);
+  max-height: 360px;
+  overflow: auto;
+}
+.atc-gutter {
+  user-select: none;
+  text-align: right;
+  padding: 12px 8px;
+  color: var(--atc-muted);
+  background: var(--atc-surface);
+  border-right: 1px solid var(--atc-border);
+  white-space: pre;
+}
+.atc-textarea {
+  flex: 1;
+  border: none;
+  outline: none;
+  resize: none;
+  padding: 12px;
+  color: var(--atc-text);
+  background: transparent;
+  font: inherit;
+  white-space: pre;
+  overflow-wrap: normal;
+  min-height: 220px;
+}
+
+.atc-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--atc-surface);
+  border-top: 1px solid var(--atc-border);
+}
+.atc-btn {
+  appearance: none;
+  border: 1px solid var(--atc-border);
+  background: var(--atc-bg);
+  color: var(--atc-text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.atc-btn:hover { background: var(--atc-surface); }
+.atc-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.atc-btn-primary {
+  background: var(--atc-primary);
+  border-color: var(--atc-primary);
+  color: #fff;
+}
+.atc-btn-primary:hover { background: var(--atc-primary-hover); }
+
+.atc-status {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--atc-muted);
+}
+
+.atc-output {
+  border-top: 1px solid var(--atc-border);
+}
+.atc-output-header {
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--atc-muted);
+  background: var(--atc-surface);
+}
+.atc-output pre {
+  margin: 0;
+  padding: 12px;
+  font-family: var(--atc-mono);
+  font-size: 13px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 260px;
+  overflow: auto;
+}
+.atc-stdout { color: var(--atc-text); }
+.atc-stderr { color: var(--atc-danger); background: var(--atc-danger-bg); }
+.atc-meta {
+  padding: 6px 12px 10px;
+  font-size: 12px;
+  color: var(--atc-muted);
+}
+.atc-meta .atc-ok { color: var(--atc-success); }
+.atc-meta .atc-fail { color: var(--atc-danger); }
