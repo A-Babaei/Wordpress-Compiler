@@ -1,0 +1,50 @@
+services:
+  # Fronts the real Docker socket and exposes only the specific API
+  # calls the backend needs (create/start/wait/logs/remove containers,
+  # inspect images). The backend never touches /var/run/docker.sock
+  # directly — see SECURITY.md for why that distinction matters.
+  docker-proxy:
+    image: tecnativa/docker-socket-proxy:latest
+    environment:
+      CONTAINERS: 1
+      IMAGES: 1
+      POST: 1
+      NETWORKS: 0
+      VOLUMES: 0
+      EXEC: 0
+      BUILD: 0
+      SWARM: 0
+      SERVICES: 0
+      INFO: 1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+    networks: [internal]
+
+  api:
+    build: ./backend
+    environment:
+      DOCKER_HOST: tcp://docker-proxy:2375
+      SANDBOX_IMAGE: ${SANDBOX_IMAGE:-academy-tech-compiler-sandbox:latest}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-https://academy-tech.ir}
+      JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in .env}
+      JWT_ALGORITHM: ${JWT_ALGORITHM:-HS256}
+      JWT_AUDIENCE: ${JWT_AUDIENCE:-academy-tech-compiler}
+      ALLOW_ANONYMOUS: ${ALLOW_ANONYMOUS:-false}
+      RUN_TIMEOUT_SECONDS: ${RUN_TIMEOUT_SECONDS:-8}
+      MAX_OUTPUT_BYTES: ${MAX_OUTPUT_BYTES:-65536}
+      MAX_CODE_LENGTH: ${MAX_CODE_LENGTH:-20000}
+      RATE_LIMIT_PER_MINUTE: ${RATE_LIMIT_PER_MINUTE:-10}
+      SANDBOX_MEM_LIMIT: ${SANDBOX_MEM_LIMIT:-128m}
+      SANDBOX_NANO_CPUS: ${SANDBOX_NANO_CPUS:-500000000}
+      SANDBOX_PIDS_LIMIT: ${SANDBOX_PIDS_LIMIT:-64}
+    depends_on:
+      - docker-proxy
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    networks: [internal]
+
+networks:
+  internal:
+    driver: bridge
